@@ -32,7 +32,7 @@ def yurt_kontrol():
 almanya_saati = datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(hours=2)
 
 # Her sabah 04:22 ile 04:33 arasındaki o ilk sorguda günaydın raporu gönderir
-if almanya_saati.hour == 4 and 22 <= almanya_saati.minute < 33:
+if almanya_saati.hour == 4 and 29 <= almanya_saati.minute < 40:
     mesaj_gonder("☀️ Günaydın Erenciğim, ev hala yok ama ben nöbetteyim!")
 
 # Web sitesini kontrol eden asıl fonksiyonu tetikliyoruz
