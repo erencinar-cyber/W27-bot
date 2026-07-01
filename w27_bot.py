@@ -1,38 +1,31 @@
 import requests
-import datetime
+import time
 
-# Eğer kanala geçtiysen kanalın ID'sini, geçmediysen kendi ID'ni kullan
 TOKEN = "8946108216:AAEFSr85bhDIuvui8ZK_xGf1kuL1bE0oJwI"
-CHAT_ID = "8324006530" 
+CHAT_ID = "8324006530" # Eğer kanala geçtiysen kanalın ID'sini yazmayı unutma
 W27_URL = "https://www.apartments-hn.de/en/book-apartment/"
 
 def mesaj_gonder(mesaj):
     url = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
-    payload = {"chat_id": CHAT_ID, "text": mesaj}
-    try:
-        requests.post(url, data=payload)
-    except:
-        pass
+    requests.post(url, data={"chat_id": CHAT_ID, "text": mesaj})
 
-def yurt_kontrol():
-    headers = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
-    }
+headers = {"User-Agent": "Mozilla/5.0"}
+
+mesaj_gonder("🛠️ TEST BAŞLADI: Yurdun sitesine girip yazıyı okuyacağım...")
+
+# Siteyi 3 kez kontrol edecek döngü
+for i in range(3):
     try:
         cevap = requests.get(W27_URL, headers=headers)
-        sayfa_icerigi = cevap.text
         
-        if "There are currently no more units available" not in sayfa_icerigi:
-            mesaj_gonder("🚨 W27 yurdunda boş oda açılmış olabilir! Hemen linke tıkla ve kontrol et: " + W27_URL)
-            
+        # Eğer "boş ev yok" yazısı SİTEDE VARSA:
+        if "There are currently no more units available" in cevap.text:
+            mesaj_gonder(f"🔍 Deneme {i+1}: Sitedeyim. 'Boş ev yok' yazısını bizzat gördüm. Sistem kusursuz.")
+        else:
+            mesaj_gonder(f"🚨 DİKKAT! O uyarı yazısı kaybolmuş!")
     except Exception as e:
-        pass # GitHub Actions hata durumunda kendi kendine tekrar deneyeceği için burayı sessiz geçiyoruz
+        mesaj_gonder(f"Bağlantı hatası: {e}")
+        
+    time.sleep(10) # Ban yememek için 10 saniye bekle
 
-# Saat uyarısını da düzelttik, artık güncel UTC formatını kullanıyoruz
-almanya_saati = datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(hours=2)
-
-# Sistem her 10 dakikada bir çalışacağı için, saat 00:00 ile 00:10 arasına denk gelen o tek seferde gece raporu atacak
-if almanya_saati.hour == 0 and 0 <= almanya_saati.minute < 10:
-    mesaj_gonder("🌙 İyi geceler Erenciğim, GitHub üzerinden W27 nöbetine sorunsuz devam ediyorum!")
-
-yurt_kontrol()
+mesaj_gonder("✅ TEST BİTTİ. İçin rahat olsun, bot kör değil. Lütfen GitHub'a eski orijinal kodu geri yapıştır!")
