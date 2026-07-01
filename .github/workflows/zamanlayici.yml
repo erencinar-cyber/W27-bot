@@ -1,0 +1,23 @@
+name: W27 Yurt Botu
+on:
+  schedule:
+    - cron: '*/11 * * * *'
+  workflow_dispatch:
+
+jobs:
+  run-bot:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Kodlari Getir
+        uses: actions/checkout@v3
+
+      - name: Python Kurulumu
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Kutuphaneleri Yukle
+        run: pip install requests
+
+      - name: Botu Calistir
+        run: python w27_bot.py
