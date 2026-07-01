@@ -1,0 +1,23 @@
+name: W27 Yurt Botu
+on:
+  schedule:
+    - cron: '*/11 * * * *' # Her 11 dakikada bir çalıştır
+  workflow_dispatch: # Test etmek için manuel çalıştırma butonu ekler
+
+jobs:
+  run-bot:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Kodları Getir
+        uses: actions/checkout@v3
+
+      - name: Python Kurulumu
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Kütüphaneleri Yükle
+        run: pip install requests
+
+      - name: Botu Çalıştır
+        run: python W27_bot.py
