@@ -24,14 +24,17 @@ def yurt_kontrol():
 
     try:
         cevap = requests.get(W27_URL, headers=headers)
-        sayfa_icerigi = cevap.text
+        # Sitedeki tüm yazıları küçük harfe çeviriyoruz ki büyük/küçük harf uyumsuzluğundan kaçmasın
+        sayfa_icerigi = cevap.text.lower() 
         
-        # Sitede uyarı yazısı VARSA:
-        if "There are currently no more units available" in sayfa_icerigi:
-            mesaj_gonder(f"ℹ️ [{saat_str}] Durum Raporu: W27 sitesi kontrol edildi. Şu an boş oda YOK.")
-        # Sitede uyarı yazısı YOKSA (Ev açıldıysa):
-        else:
-            mesaj_gonder(f"🚨 [{saat_str}] DİKKAT! W27 yurdunda boş oda açılmış olabilir! Hemen linke tıkla: {W27_URL}")
+        # Sitede "soon available" yazısı VARSA (oda açıldıysa):
+        if "soon available" in sayfa_icerigi:
+            mesaj_gonder(f"🚨 [{saat_str}] DİKKAT! Eren, W27 yurdunda 'soon available' yazısı çıktı! BOŞ ODA VAR, hemen linke tıkla: {W27_URL}")
+        
+        # Yazı YOKSA ve saat tam 00, 06, 12 veya 18 ise:
+        # (cron 10 dakikada bir çalıştığı için sadece saat başındaki ilk seferde mesaj atması için minute < 10 ekledik)
+        elif almanya_saati.hour % 6 == 0 and almanya_saati.minute < 10:
+            mesaj_gonder(f"ℹ️ [{saat_str}] tık tık tık. Sistem tıkır tıkır çalışıyor, W27 kontrol edildi. Şu an boş oda YOK.")
             
     except Exception as e:
         mesaj_gonder(f"⚠️ [{saat_str}] HATA: Siteye bağlanılamadı. GitHub ban yemiş olabilir! Detay: {e}")
