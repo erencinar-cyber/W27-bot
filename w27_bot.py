@@ -35,6 +35,11 @@ def yurt_kontrol():
         cevap = requests.get(W27_URL, headers=headers)
         html = cevap.text
         
+        # --- TEST KODU BAŞLANGICI ---
+        kelime_sayisi = html.lower().count("soon available")
+        mesaj_gonder(f"🕵️ TEST RAPORU [{saat_str}]: Bot siteyi okudu. Sitenin kodlarında 'soon available' kelimesini tam {kelime_sayisi} kez buldu.")
+        # --- TEST KODU BİTİŞİ ---
+        
         bulunan_odalar = {} # Odanın numarasını ve detaylarını tutacağımız sözlük
         
         satirlar = html.split('<tr')
@@ -78,7 +83,7 @@ def yurt_kontrol():
         if len(yeni_odalar) > 0:
             for yeni_oda in yeni_odalar:
                 oda_detayi = bulunan_odalar[yeni_oda]
-                mesaj_gonder(f"🚨 [{saat_str}] DİKKAT! W27 YENİ BOŞ ODA!\n\n{oda_detayi}\n\n🔗 Hemen başvur: {W27_URL}")
+                mesaj_gonder(f"🚨 [{saat_str}] DİKKAT! W27 Yurdunda YENİ BOŞ ODA!\n\n{oda_detayi}\n\n🔗 Hemen başvur: {W27_URL}")
             
             # Güncel oda listesini hafızaya kaydet
             with open(HAFIZA_DOSYASI, "w", encoding="utf-8") as f:
@@ -90,9 +95,9 @@ def yurt_kontrol():
             with open(HAFIZA_DOSYASI, "w", encoding="utf-8") as f:
                 f.write("")
                 
-        # 5. Gece 00.00 veya Öğlen 12.00 durum raporu (Mesaj atılmadıysa)
-        elif (almanya_saati.hour == 4 or almanya_saati.hour == 16) and almanya_saati.minute < 10:
-            mesaj_gonder(f"ℹ️ [{saat_str}] Sistem çalışıyor, kontrol yapıldı. Yeni boş oda YOK.")
+        # 5. Gece 00.00, 04.00 veya Öğlen 12.00 durum raporu (Mesaj atılmadıysa)
+        elif (almanya_saati.hour == 0 or almanya_saati.hour == 4 or almanya_saati.hour == 12) and almanya_saati.minute < 10:
+            mesaj_gonder(f"ℹ️ [{saat_str}] Sistem tıkır tıkır çalışıyor, kontrol yapıldı. Yeni boş oda YOK.")
             
     except Exception as e:
         mesaj_gonder(f"⚠️ [{saat_str}] HATA: Siteye bağlanılamadı. Detay: {e}")
