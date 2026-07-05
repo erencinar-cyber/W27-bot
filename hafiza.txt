@@ -1,1 +1,0 @@
-class="book-property__control"> Availability All Availability Soon available Already taken
