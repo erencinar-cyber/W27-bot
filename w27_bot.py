@@ -45,7 +45,14 @@ def yurt_kontrol():
             satirlar = re.split(r'<div|<li', html, flags=re.IGNORECASE)
             
         for satir in satirlar:
-            if "soon available" in satir.lower():
+            satir_kucuk = satir.lower()
+            
+            # FİLTRE MENÜSÜNÜ ELEME TAKTİĞİ:
+            # 1. 'soon available' kelimesi kesinlikle olmalı.
+            # 2. 'already taken' kelimesi OLMAMALI (Filtre menüsünde ikisi birden olur, gerçek ilanda tek durum olur).
+            # 3. 'book-property__control' adlı o menünün kodu OLMAMALI.
+            if "soon available" in satir_kucuk and "already taken" not in satir_kucuk and "book-property__control" not in satir_kucuk:
+                
                 # O satırdaki bütün gizli kodları silip saf metni alıyoruz
                 saf_metin = html_temizle(satir)
                 
@@ -56,7 +63,8 @@ def yurt_kontrol():
                     son = min(len(saf_metin), index + 50)
                     saf_metin = "... " + saf_metin[bas:son] + " ..."
                     
-                if saf_metin:
+                # Anlamsız kısa metinleri de listeye ekleme
+                if saf_metin and len(saf_metin) > 10:
                     bulunan_odalar.append(saf_metin)
 
         # 1. Hafızadaki ESKİ odaları oku
@@ -83,7 +91,7 @@ def yurt_kontrol():
             with open(HAFIZA_DOSYASI, "w", encoding="utf-8") as f:
                 f.write("")
                 
-        # 5. Gece 00.00 veya Öğlen 12.00 durum raporu (İstersen saati değiştirebilirsin)
+        # 5. Gece 00.00 veya Öğlen 12.00 durum raporu
         elif (almanya_saati.hour == 0 or almanya_saati.hour == 12) and almanya_saati.minute < 10:
             mesaj_gonder(f"ℹ️ [{saat_str}] Sistem çalışıyor, kontrol yapıldı. Yeni boş oda YOK.")
             
