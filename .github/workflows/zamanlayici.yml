@@ -33,11 +33,14 @@ jobs:
           git config --global user.name "GitHub Action Bot"
           git config --global user.email "actions@github.com"
           
-          # Dosyayı ekle (eğer ilk defa oluştuysa da dahil eder)
+          # Dosya henüz yoksa (ilk çalışma) hata vermemesi için boş bir tane oluşturuyoruz
+          touch hafiza.txt
+          
+          # Dosyayı ekle
           git add hafiza.txt
           
           # Sadece değişiklik varsa kaydet (yoksa hata vermesini engeller)
-          git diff-index --quiet HEAD || git commit -m "Hafiza güncellendi"
+          git diff-index --quiet HEAD || git commit -m "Hafiza guncellendi"
           
           # Değişiklikleri GitHub'a yolla
           git push
