@@ -8,6 +8,11 @@ on:
 jobs:
   run-bot:
     runs-on: ubuntu-latest
+    
+    # Bota dosyayı güncelleyebilmesi için yazma izni veriyoruz
+    permissions:
+      contents: write 
+
     steps:
       - name: Kodlari Getir
         uses: actions/checkout@v3
@@ -22,3 +27,17 @@ jobs:
 
       - name: Botu Calistir
         run: python w27_bot.py
+
+      - name: Hafizayi Kaydet
+        run: |
+          git config --global user.name "GitHub Action Bot"
+          git config --global user.email "actions@github.com"
+          
+          # Dosyayı ekle (eğer ilk defa oluştuysa da dahil eder)
+          git add hafiza.txt
+          
+          # Sadece değişiklik varsa kaydet (yoksa hata vermesini engeller)
+          git diff-index --quiet HEAD || git commit -m "Hafiza güncellendi"
+          
+          # Değişiklikleri GitHub'a yolla
+          git push
