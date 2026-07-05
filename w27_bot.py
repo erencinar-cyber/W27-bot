@@ -2,7 +2,7 @@ import requests
 import datetime
 
 TOKEN = "8946108216:AAEFSr85bhDIuvui8ZK_xGf1kuL1bE0oJwI"
-CHAT_ID = "8324006530" 
+CHAT_ID = "-1004436817775" 
 W27_URL = "https://www.apartments-hn.de/en/book-apartment/"
 
 def mesaj_gonder(mesaj):
