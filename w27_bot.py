@@ -20,7 +20,11 @@ def mesaj_gonder(mesaj):
         pass
 
 def html_temizle(metin):
+    # Bölme işleminden dolayı '<' işareti kaybolan etiketin artıklarını (class="..." vb.) '>' işaretine kadar siler
+    metin = re.sub(r'^[^>]*>', '', metin)
+    # Geriye kalan tüm normal HTML etiketlerini (<...>) siler
     metin = re.sub(r'<[^>]+>', ' ', metin)
+    # Fazla boşlukları tek boşluğa indirir
     return " ".join(metin.split())
 
 def yurt_kontrol():
@@ -28,7 +32,7 @@ def yurt_kontrol():
     saat_str = almanya_saati.strftime("%H:%M")
 
     try:
-        # Sanal Chrome Ayarları (Arka planda görünmez olarak çalışması için)
+        # Sanal Chrome Ayarları
         chrome_options = Options()
         chrome_options.add_argument("--headless")
         chrome_options.add_argument("--no-sandbox")
@@ -39,12 +43,12 @@ def yurt_kontrol():
         driver = webdriver.Chrome(options=chrome_options)
         driver.get(W27_URL)
         
-        # Sitenin JavaScript'inin tabloyu yüklemesi için 5 saniye bekle!
+        # Tablonun yüklenmesi için 5 saniye bekle
         time.sleep(5)
         
-        # Yüklenmiş tam sayfanın kodlarını al
+        # Tam sayfa kodlarını al
         html = driver.page_source
-        driver.quit() # Tarayıcıyı kapat
+        driver.quit() 
         
         bulunan_odalar = [] 
         
@@ -59,12 +63,14 @@ def yurt_kontrol():
             if "soon available" in satir_kucuk and "already taken" not in satir_kucuk and "book-property__control" not in satir_kucuk:
                 saf_metin = html_temizle(satir)
                 
+                # Çok uzunsa kırp
                 if len(saf_metin) > 300:
                     index = saf_metin.lower().find("soon available")
                     bas = max(0, index - 50)
                     son = min(len(saf_metin), index + 50)
                     saf_metin = "... " + saf_metin[bas:son] + " ..."
                     
+                # Temiz metni listeye ekle
                 if saf_metin and len(saf_metin) > 10:
                     bulunan_odalar.append(saf_metin)
 
