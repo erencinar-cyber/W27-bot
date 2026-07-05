@@ -16,10 +16,10 @@ def mesaj_gonder(mesaj):
     except:
         pass
 
-# HTML etiketlerini ve fazlalık boşlukları temizleyen yardımcı fonksiyon
 def html_temizle(metin):
-    metin = re.sub(r'<br\s*/?>', ' ', metin, flags=re.IGNORECASE)
-    metin = re.sub(r'<[^>]+>', '', metin)
+    # Tüm HTML kodlarını ( <...> şeklindeki her şeyi) boşlukla değiştirir
+    metin = re.sub(r'<[^>]+>', ' ', metin)
+    # Fazla boşlukları tek boşluğa indirir
     return " ".join(metin.split())
 
 def yurt_kontrol():
@@ -35,40 +35,29 @@ def yurt_kontrol():
         cevap = requests.get(W27_URL, headers=headers)
         html = cevap.text
         
-        # --- TEST KODU BAŞLANGICI ---
-        kelime_sayisi = html.lower().count("soon available")
-        mesaj_gonder(f"🕵️ TEST RAPORU [{saat_str}]: Bot siteyi okudu. Sitenin kodlarında 'soon available' kelimesini tam {kelime_sayisi} kez buldu.")
-        # --- TEST KODU BİTİŞİ ---
+        bulunan_odalar = [] 
         
-        bulunan_odalar = {} # Odanın numarasını ve detaylarını tutacağımız sözlük
+        # Siteyi satırlara ayırıyoruz
+        satirlar = re.split(r'<tr', html, flags=re.IGNORECASE)
         
-        satirlar = html.split('<tr')
+        # Eğer site tablo (tr) kullanmıyorsa B planı olarak sayfayı farklı bloklara bölelim
+        if len(satirlar) < 3:
+            satirlar = re.split(r'<div|<li', html, flags=re.IGNORECASE)
+            
         for satir in satirlar:
             if "soon available" in satir.lower():
-                # Satırdaki tüm <td> (hücre) etiketlerini buluyoruz
-                hucreler = re.findall(r'<td[^>]*>(.*?)</td>', satir, re.IGNORECASE | re.DOTALL)
+                # O satırdaki bütün gizli kodları silip saf metni alıyoruz
+                saf_metin = html_temizle(satir)
                 
-                # Tabloda 6 sütun var, hepsini başarıyla çektiysek:
-                if len(hucreler) >= 6:
-                    oda_no = html_temizle(hucreler[0])
-                    ozellik = html_temizle(hucreler[1])
-                    cadde = html_temizle(hucreler[2])
-                    metrekare = html_temizle(hucreler[3])
-                    fiyat = html_temizle(hucreler[4])
-                    durum_kutusu = html_temizle(hucreler[5])
+                # Eğer kod tüm sayfayı tek satır sandıysa (çok uzunsa) sadece ilanın olduğu kısmı kırp
+                if len(saf_metin) > 300:
+                    index = saf_metin.lower().find("soon available")
+                    bas = max(0, index - 50)
+                    son = min(len(saf_metin), index + 50)
+                    saf_metin = "... " + saf_metin[bas:son] + " ..."
                     
-                    # Tarihi durum kutusunun içinden (örn: 2026-08-01) bulup çıkartıyoruz
-                    tarih_match = re.search(r'\d{4}-\d{2}-\d{2}', durum_kutusu)
-                    tarih = tarih_match.group(0) if tarih_match else "Belirtilmemiş"
-                    
-                    if oda_no:
-                        detay = (f"🚪 Oda: {oda_no}\n"
-                                 f"🛏 Özellik: {ozellik}\n"
-                                 f"📍 Konum: {cadde}\n"
-                                 f"📏 Boyut: {metrekare} m²\n"
-                                 f"💶 Fiyat: {fiyat} €\n"
-                                 f"📅 Tarih: {tarih}")
-                        bulunan_odalar[oda_no] = detay
+                if saf_metin:
+                    bulunan_odalar.append(saf_metin)
 
         # 1. Hafızadaki ESKİ odaları oku
         eski_odalar = []
@@ -77,17 +66,16 @@ def yurt_kontrol():
                 eski_odalar = [satir.strip() for satir in f.readlines() if satir.strip()]
         
         # 2. Sadece hafızada OLMAYAN (yepyeni açılan) odaları tespit et
-        yeni_odalar = [oda_no for oda_no in bulunan_odalar.keys() if oda_no not in eski_odalar]
+        yeni_odalar = [oda for oda in bulunan_odalar if oda not in eski_odalar]
         
         # 3. YENİ bir oda varsa mesaj at!
         if len(yeni_odalar) > 0:
-            for yeni_oda in yeni_odalar:
-                oda_detayi = bulunan_odalar[yeni_oda]
-                mesaj_gonder(f"🚨 [{saat_str}] DİKKAT! W27 Yurdunda YENİ BOŞ ODA!\n\n{oda_detayi}\n\n🔗 Hemen başvur: {W27_URL}")
+            for oda_detayi in yeni_odalar:
+                mesaj_gonder(f"🚨 [{saat_str}] DİKKAT! W27 Yurdunda YENİ BOŞ ODA!\n\nİlan Detayları:\n{oda_detayi}\n\n🔗 Hemen başvur: {W27_URL}")
             
             # Güncel oda listesini hafızaya kaydet
             with open(HAFIZA_DOSYASI, "w", encoding="utf-8") as f:
-                for oda in bulunan_odalar.keys():
+                for oda in bulunan_odalar:
                     f.write(oda + "\n")
                     
         # 4. Bütün odalar kapıldıysa hafızayı sıfırla ki döngü yenilensin
@@ -95,9 +83,9 @@ def yurt_kontrol():
             with open(HAFIZA_DOSYASI, "w", encoding="utf-8") as f:
                 f.write("")
                 
-        # 5. Gece 00.00, 04.00 veya Öğlen 12.00 durum raporu (Mesaj atılmadıysa)
-        elif (almanya_saati.hour == 0 or almanya_saati.hour == 4 or almanya_saati.hour == 12) and almanya_saati.minute < 10:
-            mesaj_gonder(f"ℹ️ [{saat_str}] Sistem tıkır tıkır çalışıyor, kontrol yapıldı. Yeni boş oda YOK.")
+        # 5. Gece 00.00 veya Öğlen 12.00 durum raporu (İstersen saati değiştirebilirsin)
+        elif (almanya_saati.hour == 0 or almanya_saati.hour == 12) and almanya_saati.minute < 10:
+            mesaj_gonder(f"ℹ️ [{saat_str}] Sistem çalışıyor, kontrol yapıldı. Yeni boş oda YOK.")
             
     except Exception as e:
         mesaj_gonder(f"⚠️ [{saat_str}] HATA: Siteye bağlanılamadı. Detay: {e}")
