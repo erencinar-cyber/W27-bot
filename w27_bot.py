@@ -6,6 +6,7 @@ import time
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
+# Şifreler GitHub Secrets kasasından çekiliyor
 TOKEN = os.environ.get("TELEGRAM_TOKEN")
 CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID")
 W27_URL = "https://www.apartments-hn.de/en/book-apartment/"
@@ -93,7 +94,8 @@ def yurt_kontrol():
             with open(HAFIZA_DOSYASI, "w", encoding="utf-8") as f:
                 f.write("")
                 
-        elif (almanya_saati.hour == 0 or almanya_saati.hour == 12) and almanya_saati.minute < 10:
+        # SADECE GECE YARISI (Saat 00:00 ile 00:09 arası) çalışıp durum raporu atar
+        elif almanya_saati.hour == 0 and almanya_saati.minute < 10:
             mesaj_gonder(f"ℹ️ [{saat_str}] Sistem çalışıyor, tarayıcı testi başarılı. Yeni boş oda YOK.")
             
     except Exception as e:
