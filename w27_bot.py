@@ -6,8 +6,8 @@ import time
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
-TOKEN = "8946108216:AAEFSr85bhDIuvui8ZK_xGf1kuL1bE0oJwI"
-CHAT_ID = "-1004436817775"
+TOKEN = os.environ.get("TELEGRAM_TOKEN")
+CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID")
 W27_URL = "https://www.apartments-hn.de/en/book-apartment/"
 HAFIZA_DOSYASI = "hafiza.txt"
 
