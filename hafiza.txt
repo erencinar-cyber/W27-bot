@@ -1,1 +1,45 @@
+0/ 003 Single, balcony Inner courtyard 27.23 520.50 Soon available 2027-04-01 Apply now
+0/ 046 Single, balcony Südstraße 24.91 500.50 Soon available 2027-04-01 Apply now
+0/ 047 Single, balcony Südstraße 25.06 500.50 Soon available 2027-04-01 Apply now
+1/ 102 Single, balcony Inner courtyard 27.2 520.50 Soon available 2027-04-01 Apply now
+1/ 106 Single, balcony Inner courtyard 27.19 520.50 Soon available 2027-04-01 Apply now
+1/ 122 Single, balcony Wilhelmstraße 27.22 520.50 Soon available 2027-04-01 Apply now
+1/ 123 Single, balcony Wilhelmstraße 27.28 520.50 Soon available 2027-04-01 Apply now
+1/ 126 Single, balcony Wilhelmstraße 27.16 520.50 Soon available 2027-04-01 Apply now
+1/ 127 Single, balcony, barrier-free Wilhelmstraße 31.07 520.50 Soon available 2027-04-01 Apply now
+1/ 129 Single, balcony Wilhelmstraße 25.83 505.50 Soon available 2027-04-01 Apply now
+1/ 130 Single, balcony Wilhelmstraße 25.83 505.50 Soon available 2027-04-01 Apply now
+1/ 144 Single, balcony Inner courtyard 25.21 500.50 Soon available 2027-04-01 Apply now
+1/ 147 Single, balcony Südstraße 25.07 500.50 Soon available 2027-04-01 Apply now
+2/ 206 Single, balcony Inner courtyard 27.22 520.50 Soon available 2027-04-01 Apply now
+2/ 209 Single, balcony Inner courtyard 27.19 520.50 Soon available 2027-04-01 Apply now
+2/ 210 Single, balcony Inner courtyard 27.22 520.50 Soon available 2027-04-01 Apply now
+2/ 212 Single, balcony Inner courtyard 26.86 520.50 Soon available 2027-04-01 Apply now
+2/ 227 Single, balcony, barrier-free Wilhelmstraße 31.13 520.50 Soon available 2027-04-01 Apply now
+2/ 230 Single, balcony Wilhelmstraße 25.84 505.50 Soon available 2027-04-01 Apply now
+2/ 241 Single, balcony Inner courtyard 25.06 500.50 Soon available 2027-04-01 Apply now
+2/ 245 Single, balcony Südstraße 24.91 500.50 Soon available 2027-04-01 Apply now
+3/ 305 Single, balcony Inner courtyard 27.20 520.50 Soon available 2027-04-01 Apply now
+3/ 312 Single, balcony Inner courtyard 26.84 520.50 Soon available 2027-04-01 Apply now
+3/ 313 Single, balcony Inner courtyard 25.82 505.50 Soon available 2027-04-01 Apply now
+3/ 327 Single, balcony, barrier-free Wilhelmstraße 31.12 520.50 Soon available 2027-04-01 Apply now
+3/ 328 Single, balcony Wilhelmstraße 25.82 505.50 Soon available 2027-04-01 Apply now
+3/ 331 Single, balcony Wilhelmstraße 26.02 505.50 Soon available 2027-04-01 Apply now
+3/ 337 Single, no balcony Wilhelmstraße 20.34 475.50 Soon available 2027-04-01 Apply now
+3/ 347 Single, balcony Südstraße 25.05 500.50 Soon available 2027-04-01 Apply now
+4/ 401 Single, balcony Inner courtyard 27.37 520.50 Soon available 2027-04-01 Apply now
+4/ 405 Single, balcony Inner courtyard 27.22 520.50 Soon available 2027-04-01 Apply now
+4/ 415 Single, balcony Inner courtyard 25.96 505.50 Soon available 2027-04-01 Apply now
+4/ 416 Partner, balcony Wilhelmstraße 44.36 755.50 Soon available 2027-04-01 Apply now
+4/ 417 Single, balcony, limited furnishing Wilhelmstraße 24.82 475.50 Soon available 2027-04-01 Apply now
+4/ 420 Partner, balcony Wilhelmstraße 44.51 755.50 Soon available 2027-04-01 Apply now
+4/ 427 Single, no balcony Wilhelmstraße 20.35 475.50 Soon available 2027-04-01 Apply now
+4/ 429 Single, no balcony Wilhelmstraße 20.35 475.50 Soon available 2027-04-01 Apply now
 4/ 431 Single, balcony Inner courtyard 25.12 500.50 Soon available 2027-01-01 Apply now
+5/ 505 Single, no balcony Wilhelmstraße 20.41 475.50 Soon available 2027-04-01 Apply now
+5/ 507 Single, no balcony Wilhelmstraße 20.35 475.50 Soon available 2027-04-01 Apply now
+5/ 514 Single, balcony Südstraße 25.06 500.50 Soon available 2027-04-01 Apply now
+5/ 515 Single, balcony Südstraße 25.06 500.50 Soon available 2027-04-01 Apply now
+5/ 516 Single, balcony Südstraße 25.22 500.50 Soon available 2027-04-01 Apply now
+6/ 604 Single, no balcony Wilhelmstraße 20.35 475.50 Soon available 2027-04-01 Apply now
+6/ 607 Single, balcony Inner courtyard 25.06 500.50 Soon available 2027-04-01 Apply now
